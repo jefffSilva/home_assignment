@@ -101,61 +101,6 @@ variable "ssh_ingress_ports" {
   default     = []
 }
 
-
-variable "pgsql_ingress_ranges" {
-  description = "Ranges to allow pgsql ingress from."
-  type        = list(string)
-  default     = []
-}
-
-variable "pgsql_ingress_protocol" {
-  description = "Protocol for pgsql ingress."
-  type        = string
-  default     = ""
-}
-
-variable "pgsql_ingress_ports" {
-  description = "Ports for pgsql ingress."
-  type        = list(string)
-  default     = []
-}
-
-variable "openvpn_ingress_ranges" {
-  description = "Ranges to allow OpenVPN ingress from."
-  type        = list(string)
-  default     = []
-}
-
-variable "openvpn_ingress_protocol" {
-  description = "Protocol for OpenVPN ingress."
-  type        = string
-  default     = ""
-}
-
-variable "openvpn_ingress_ports" {
-  description = "Ports for OpenVPN ingress."
-  type        = list(string)
-  default     = []
-}
-
-variable "openvpn_egress_ranges" {
-  description = "Ranges to allow OpenVPN egress to."
-  type        = list(string)
-  default     = []
-}
-
-variable "openvpn_egress_protocol" {
-  description = "Protocol for OpenVPN egress."
-  type        = string
-  default     = ""
-}
-
-variable "openvpn_egress_ports" {
-  description = "Ports for OpenVPN egress."
-  type        = list(string)
-  default     = []
-}
-
 variable "vpc_name" {
   description = "VPC Netowrk name"
   type        = string
