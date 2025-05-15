@@ -42,14 +42,6 @@ ssh_ingress_ranges            = ["35.235.240.0/20"]
 ssh_ingress_protocol          = "tcp"
 ssh_ingress_ports             = ["22"]
 
-openvpn_ingress_ranges        = ["0.0.0.0/0"]
-openvpn_ingress_protocol      = "udp"
-openvpn_ingress_ports         = ["1194"]
-
-pgsql_ingress_ranges        = ["0.0.0.0/0"]
-pgsql_ingress_protocol      = "tcp"
-pgsql_ingress_ports         = ["5432"]
-
 openvpn_egress_ranges         = ["10.8.0.0/16"]
 openvpn_egress_protocol       = "all"
 openvpn_egress_ports          = []
