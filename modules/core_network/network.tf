@@ -91,7 +91,7 @@ resource "google_compute_subnetwork" "subnets" {
   region                   = lookup(each.value, "region", var.region)
   private_ip_google_access = true
   dynamic "secondary_ip_range" {
-    for_each = each.value.secondary_ip_range
+    for_each = coalesce(each.value.secondary_ip_range, [])
     content{
     range_name    = secondary_ip_range.value.range_name
     ip_cidr_range = secondary_ip_range.value.ip_cidr_range

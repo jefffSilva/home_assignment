@@ -92,6 +92,12 @@ variable "secret_ids" {
   default     = []
 }
 
+# Secret Manager Variables
+variable "sa_names" {
+  description = "List of secret names to create in Secret Manager."
+  type        = list(string)
+  default     = []
+}
 # Cloud Armor Variables
 variable "cloud_armor_policy_name" {
   description = "Name for the Cloud Armor security policy."

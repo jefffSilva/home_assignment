@@ -28,8 +28,9 @@ resource "google_service_account" "service_accounts" {
   # Ensure account_id is within length limits (6-30 chars)
   # Using substr to truncate if necessary. Consider a more robust naming strategy if collisions are likely.
   account_id   = substr("${var.prefix}${lower(each.value)}", 0, 30)
-  display_name = coalesce(var.display_names[each.value], "Terraform-managed SA: ${each.value}")
-  description  = coalesce(var.descriptions[each.value], "Managed by Terraform")
+  display_name = lookup(var.display_names, each.value, "Terraform-managed SA: ${each.value}")
+  description = lookup(var.descriptions, each.value, "Managed by Terraform")
+
 }
 
 # Grant project-level roles to the service accounts

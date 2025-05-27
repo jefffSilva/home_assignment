@@ -75,8 +75,20 @@ module "secrets" {
   source     = "../modules/secret_manager"
   project_id = var.project_id
   secret_ids = var.secret_ids
+  replication = "automatic"
+  replication_locations  = ["us-central1", "us-east1"]
   # Configure replication, labels, initial values as needed
   depends_on = [module.project_services] # Ensure API is enabled
+  labels = {
+    env = "prod"
+  }
+
+  initial_secret_ids = ["DB_PASSWORD", "API_KEY"]
+
+  initial_secret_values = {
+    DB_PASSWORD = "super_secret_password"
+    API_KEY     = "key_abc_123"
+  }
 }
 
 # Note: This root module assumes simplified module interfaces.
