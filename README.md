@@ -1,120 +1,89 @@
-# ☁️ Google Cloud Function with Load Balancer (Terraform)
+# Terraform GCP Infrastructure
 
-This project demonstrates how to deploy a **Python Cloud Function (2nd Gen)** on Google Cloud using **Terraform**, expose it via an **HTTP Load Balancer**, and manage infrastructure using **Terraform Workspaces**.
+This repository contains Terraform code for deploying a serverless infrastructure on Google Cloud Platform (GCP), primarily focused on Cloud Functions with supporting networking, security, and IAM components.
 
----
-
-## 📁 Project Structure
+## Repository Structure
 
 ```
-HOME_ASSIGNMENT/
-├── foundation
-    └── main.tf                         # With project creating and folders 
-    ├── variables.tf                    # Variables
-    ├── terraform.tfvars                # Environment-specific variables for the project creation
-├── modules/
-│   └── cloud_function/            # Reusable Cloud Function module
-│       ├── main.tf
-│       ├── variables.tf
-│       └── outputs.tf
-│   ....
-│   ...
-│   ..
-├── hello-world.zip                # Zipped Cloud Function source
-├── main.py                        # Python helloWorld function
-└── README.md                      # This file
+├── environments/          # Environment-specific configurations
+│   ├── dev/               # Development environment
+│   ├── qa/                # QA environment
+│   └── prod/              # Production environment
+├── modules/               # Reusable Terraform modules
+│   ├── cloud_armor/       # Web Application Firewall
+│   ├── cloud_function/    # Serverless functions
+│   ├── core_network/      # VPC, subnets, firewall rules
+│   ├── project_service/   # GCP API services enablement
+│   ├── secret_manager/    # Secret management
+│   └── service_accounts/  # IAM service accounts
+├── root_module/           # Main Terraform configuration
+│   ├── backend.tf         # State management configuration
+│   ├── main.tf            # Root module configuration
+│   ├── outputs.tf         # Root outputs
+│   ├── providers.tf       # Provider configuration
+│   ├── terraform.tfvars.example # Example variables file
+│   └── variables.tf       # Root variables
+└── README.md              # This file
 ```
 
----
+## Getting Started
 
-## 🧠 Cloud Function Code
+1. Clone this repository
+2. Navigate to the `root_module` directory
+3. Copy `terraform.tfvars.example` to `terraform.tfvars` and update with your values
+4. Initialize Terraform: `terraform init`
+5. Plan the deployment: `terraform plan`
+6. Apply the configuration: `terraform apply`
 
-### `main.py`
-```python
-def helloWorld(request):
-    if request.path != "/helloWorld":
-        return ("Not Found", 404)
-    return ("Hello, World from Cloud Functions!", 200)
-```
+## Modules
 
-Responds only to the `/helloWorld` path. Any other route returns 404.
+### Cloud Function
 
----
+Deploys Google Cloud Functions with appropriate IAM permissions and triggers.
 
-## 🔧 Packaging the Function
+### Core Network
 
-```bash
-zip -r hello-world.zip main.py requirements.txt
-```
+Sets up VPC networks, subnets, firewall rules, and private service connections.
 
----
+### Cloud Armor
 
-## 🔐 1. Authenticate with Google Cloud
+Configures Google Cloud Armor security policies for web application protection.
 
-```bash
-gcloud auth application-default login
-```
+### Project Service
 
----
+Enables required Google Cloud APIs for the project.
 
-## 🧱 2. Initialize Terraform Workspace
+### Secret Manager
 
-```bash
-terraform workspace new dev
-terraform workspace select dev
-```
+Manages secrets securely in Google Secret Manager.
 
----
+### Service Accounts
 
-## 📂 3. Deploy Foundation Infrastructure
+Creates and manages service accounts with appropriate IAM roles.
 
-This step creates:
-- GCP Project
-- Folder (if needed)
+## Environment Configuration
 
-```bash
-cd HOME_ASSIGNMENT/foundation
+The repository supports multiple environments (dev, qa, prod) through separate `.tfvars` files. Each environment can have different configurations for resources, scaling, and security settings.
 
-terraform init
-terraform plan
-terraform apply
-```
+## Multi-Region Support
 
----
+The infrastructure is designed to support deployment in multiple regions, with `us-central1` as the primary region.
 
-## 🌐 4. Deploy VPC, Load Balancer, and Cloud Function
+## Serverless Focus
 
-```bash
-cd HOME_ASSIGNMENT/resource
+This infrastructure is optimized for serverless deployments (99% Cloud Functions), minimizing the need for managing servers or containers.
 
-terraform init
-terraform plan -var-file=../resources/env/dev.tfvars
-terraform apply -var-file=../resources/env/dev.tfvars
-```
+## Basic Observability
 
----
+Basic logging and metrics are configured for all resources to enable monitoring and troubleshooting.
 
-## 📦 `terraform.tfvars` Example
+## Security Considerations
 
-```hcl
-project_id     = "your-gcp-project-id"
-region         = "us-central1"
-function_name  = "hello-world"
-source_archive = "path/to/hello-world.zip"
-```
+- Cloud Armor provides WAF protection
+- Secret Manager securely stores sensitive information
+- IAM roles follow the principle of least privilege
+- Network security is enforced through firewall rules
 
----
+## Maintenance
 
-## ✅ Outputs
-
-- Public URL via Load Balancer
-- Function Name and Region from module outputs
-
----
-
-## 📚 References
-
-- [Cloud Functions 2nd Gen](https://cloud.google.com/functions/docs/concepts/exec)
-- [Terraform Google Provider](https://registry.terraform.io/providers/hashicorp/google/latest/docs)
-- [Terraform Workspaces](https://developer.hashicorp.com/terraform/docs/language/state/workspaces)
-- [gcloud auth login](https://cloud.google.com/sdk/gcloud/reference/auth/application-default/login)
+Regular updates to the Terraform modules and provider versions are recommended to ensure security and feature compatibility.
